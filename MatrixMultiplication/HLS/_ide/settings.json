@@ -1,0 +1,10 @@
+{
+    "clangd.fallbackFlags": [
+        "-IC:\\Users\\lions\\Desktop\\Github\\RefinerViT_HLS_vscode\\MatrixMultiplication\\HLS\\build\\.\\src",
+        "-ID:\\Xilinx\\2025.1\\Vitis\\include",
+        "-ID:\\Xilinx\\2025.1\\Vitis\\include\\etc",
+        "-ID:\\Xilinx\\2025.1\\Vitis\\include\\ap_sysc",
+        "-ID:\\Xilinx\\2025.1\\Vitis\\win64\\tools\\auto_cc\\include",
+        "-ID:\\Xilinx\\2025.1\\Vitis\\win64\\tools\\systemc\\include"
+    ]
+}

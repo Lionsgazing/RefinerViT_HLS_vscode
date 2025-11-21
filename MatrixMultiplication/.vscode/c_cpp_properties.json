@@ -1,0 +1,38 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/HLS/src/**",
+                "${workspaceFolder}/Testbench/src/**",
+                "D:\\Xilinx\\2025.1\\Vitis\\include",
+                "D:\\Xilinx\\2025.1\\Vitis\\include\\etc",
+                "D:\\Xilinx\\2025.1\\Vitis\\include\\ap_sysc",
+                "D:\\Xilinx\\2025.1\\Vitis\\win64\\tools\\auto_cc\\include",
+                "D:\\Xilinx\\2025.1\\Vitis\\win64\\tools\\systemc\\include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64",
+            "args": [
+                "-MMD",
+                "-MP", 
+                "-std=c++17",
+                "-g",
+                "-Wall",
+                "-Wno-long-long",
+                "-Wno-unknown-pragmas",
+                "-Wno-template-id-cdtor",
+                "-Wno-comment",
+                "-Wno-misleading-indentation"
+            ]
+        }
+    ],
+    "version": 4
+}
