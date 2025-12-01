@@ -3,18 +3,24 @@ TARGET_EXEC := main.exe
 BUILD_DIR := ./build
 SRC_DIRS := ./src
 
-# Compiler flags
+# Compiler flags 
+# Note that there is a lot of flags to disable all sorts of warnings and errors that are encountered throughout the included libraries from Vitis. 
+# 	These errors and warnings are disabled so the console output is actually readable.
 COMPILER_FLAGS := -MMD -MP -std=c++17 -g -Wall  -Wno-long-long -Wno-unknown-pragmas -Wno-template-id-cdtor -Wno-comment -Wno-misleading-indentation -Wno-unused-label -Wno-sign-compare
-#-pedantic
+
+
+# Xilinx version
+XILINX_VERSION := 2025.1# IMPORTANT that this is set right!!
+
 # VITIS location
-VITIS_BASE := D:\\Xilinx\\2025.1\\Vitis
+VITIS_BASE_DIR := $(XILINX_BASE_DIR)\\$(XILINX_VERSION)\\Vitis
 
 # Include dirs
-VITIS_INCLUDE_BASE := $(VITIS_BASE)\\include
-VITIS_INCLUDE_ETC := $(VITIS_BASE)\\include\\etc
-VITIS_INCLUDE_AP_SYSC := $(VITIS_BASE)\\include\\ap_sysc
-VITIS_INCLUDE_AUTO_CC := $(VITIS_BASE)\\win64\\tools\\auto_cc\\include
-VITIS_INCLUDE_SYSTEMC := $(VITIS_BASE)\\win64\\tools\\systemc\\include
+VITIS_INCLUDE_STD := $(VITIS_BASE_DIR)\\include
+VITIS_INCLUDE_ETC := $(VITIS_BASE_DIR)\\include\\etc
+VITIS_INCLUDE_AP_SYSC := $(VITIS_BASE_DIR)\\include\\ap_sysc
+VITIS_INCLUDE_AUTO_CC := $(VITIS_BASE_DIR)\\win64\\tools\\auto_cc\\include
+VITIS_INCLUDE_SYSTEMC := $(VITIS_BASE_DIR)\\win64\\tools\\systemc\\include
 
 # Include HLS code
 CUSTOM_HLS_CODE_INCLUDE := ../HLS/src
@@ -30,7 +36,7 @@ LDFLAGS :=
 
 # Turn include dirs into include flags the compiler understands.
 INC_DIRS := $(shell find $(SRC_DIRS) -type d)
-INC_FLAGS := $(addprefix -I,$(INC_DIRS)) $(addprefix -I,$(VITIS_INCLUDE_BASE)) $(addprefix -I,$(VITIS_INCLUDE_ETC)) $(addprefix -I,$(VITIS_INCLUDE_AP_SYSC)) $(addprefix -I,$(VITIS_INCLUDE_AUTO_CC)) $(addprefix -I,$(VITIS_INCLUDE_SYSTEMC)) $(addprefix -I,$(CUSTOM_HLS_CODE_INCLUDE))
+INC_FLAGS := $(addprefix -I,$(INC_DIRS)) $(addprefix -I,$(VITIS_INCLUDE_STD)) $(addprefix -I,$(VITIS_INCLUDE_ETC)) $(addprefix -I,$(VITIS_INCLUDE_AP_SYSC)) $(addprefix -I,$(VITIS_INCLUDE_AUTO_CC)) $(addprefix -I,$(VITIS_INCLUDE_SYSTEMC)) $(addprefix -I,$(CUSTOM_HLS_CODE_INCLUDE))
 
 # The -MMD and -MP flags together generate Makefiles for us!
 # These files will have .d instead of .o as the output.

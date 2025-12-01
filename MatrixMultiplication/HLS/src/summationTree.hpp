@@ -49,26 +49,29 @@ struct GeneratorRemainder2 {
 };
 
 
-
 /* Summation Tree Implementation */
 template<typename InputType, typename OutputType, size_t N>
-constexpr void SummationTree(InputType input[N], OutputType* output) {
+void SummationTree(InputType input[N], OutputType* output) {
+    // Values generated at compiletime so no logic should be implemented here other than pure constants and constant arrays!
     constexpr size_t TotalReductions = constexprMath::Log2_v<N>;
-    using ArrayReductionSteps = typename GeneratorDivide2<N>::type;
-    using ArrayRemaindingReductionSteps = typename GeneratorRemainder2<N>::type;
+    using ArrayReductionSteps = typename GeneratorDivide2<N>::type; // Compiletime generates an array of the needed reduction steps for each step into the summation tree.
+    using ArrayRemaindingReductionSteps = typename GeneratorRemainder2<N>::type; // Compiletime generates an array of the needed extra steps for each step into the summation tree.
 
+    // Iterate through all reduction steps.
     for (ap_uint<32> reductionStep = 0; reductionStep < TotalReductions; reductionStep++) {
         #pragma HLS UNROLL
-        // If a extra step is needed do this.
+        // Handles the edge cases when the input size does not give a clean Log2 value.
         if (ArrayRemaindingReductionSteps::data[reductionStep]) {
             input[ArrayReductionSteps::data[reductionStep]] += input[ArrayReductionSteps::data[reductionStep] * 2];
         }
 
+        // Creates the summation tree from the compiletime generated reduction steps.
         for (ap_uint<32> storageIndex = 0; storageIndex < ArrayReductionSteps::data[reductionStep]; storageIndex++) {
             #pragma HLS UNROLL
             input[storageIndex] = input[2*storageIndex] + input[2*storageIndex + 1];
         }
     }
 
+    // Assign final result to output
     *output = input[0];
 }

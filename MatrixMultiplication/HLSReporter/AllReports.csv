@@ -1,0 +1,4 @@
+,SynthesisID,Module,Issue Type,Slack,Latency (cycles),Latency (ns),Iteration Latency,Interval,Trip Count,Pipelined,BRAM_value,BRAM_percent,DSP_value,DSP_percent,FF_value,FF_percent,LUT_value,LUT_percent,URAM_value,URAM_percent
+0,0,+ MatMul,-,1.03,38816,3.882e+05,-,38817,-,no,-,-,1,~0%,1622,~0%,22073,9%,-,-
+1,0,+ p_MatMul_ap_float_32_8_ap_float_32_8_ap_float_32_8_197_32_197_s,-,1.03,38815,3.882e+05,-,38809,-,rewind,-,-,1,~0%,1619,~0%,22059,9%,-,-
+2,0,o loopM_loopP,-,8.50,38814,3.881e+05,7,1,38809,yes,-,-,-,-,-,-,-,-,-,-
