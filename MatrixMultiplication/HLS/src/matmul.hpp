@@ -13,22 +13,22 @@ void _MatMul(AType (&A)[M][N], BType (&B)[N][P], CType (&C)[M][P]) {
     //#pragma HLS BIND_OP variable=B op=add impl=dsp
 
     // Array memory layout (optimized access)
-    #pragma HLS ARRAY_PARTITION variable=A dim=1 type=complete //block factor=4
-    #pragma HLS ARRAY_PARTITION variable=A dim=2 type=complete
-    #pragma HLS ARRAY_PARTITION variable=B dim=1 type=complete
-    #pragma HLS ARRAY_PARTITION variable=B dim=2 type=complete //block factor=4
-    #pragma HLS ARRAY_PARTITION variable=C dim=2 type=complete
-    #pragma HLS ARRAY_PARTITION variable=C dim=1 type=complete //block factor=4
+    #pragma HLS ARRAY_PARTITION variable=A dim=2 type=complete //block factor=4
+    #pragma HLS ARRAY_PARTITION variable=B dim=1 type=complete //block factor=4
+    #pragma HLS ARRAY_PARTITION variable=C dim=2 type=complete //block factor=4
 
-    loopM: for (ap_uint<32> m = 0; m < M; m++) {
-        #pragma HLS PIPELINE OFF
+
+    //#pragma HLS DATAFLOW
+    #pragma HLS PIPELINE OFF
+    loopM: for (size_t m = 0; m < M; m++) {
+        #pragma HLS PIPELINE STYLE=STP REWIND=TRUE
         //#pragma HLS UNROLL FACTOR=4
-        loopP: for (ap_uint<32> p = 0; p < P; p++) {
+        loopP: for (size_t p = 0; p < P; p++) {
             //#pragma HLS PIPELINE II=1 STYLE=STP REWIND=FALSE
-            #pragma HLS UNROLL
-            static CType mulValue[N] = {};
-            loopNMulParrallel: for (ap_uint<32> n = 0; n < N; n++) {
-                //#pragma HLS PIPELINE II=2
+            //#pragma HLS PIPELINE ON II=1 STYLE=STP REWIND=TRUE
+            #pragma HLS PIPELINE STYLE=STP REWIND=TRUE
+            CType mulValue[N] = {};
+            loopNMulParrallel: for (size_t n = 0; n < N; n++) {
                 #pragma HLS UNROLL
                 //#pragma HLS BIND_OP variable=sum op=add impl=dsp
                 //#pragma HLS BIND_OP variable=A op=mul impl=dsp
@@ -37,6 +37,7 @@ void _MatMul(AType (&A)[M][N], BType (&B)[N][P], CType (&C)[M][P]) {
             }
             //Using much optimized summation method. Without this the MatMul would be VERY slow.
             SummationTree<CType, CType, N>(mulValue, &C[m][p]); 
+
             //C[m][p] = sum;
         }
     }

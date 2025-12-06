@@ -18,13 +18,13 @@ ide:
 	$(VITIS_BIN_DIR)\\vitis.bat -w ../HLS
 
 .PHONY: clean clean-hls clean-vitis-ide
-clean: clean-hls clean-vitis-ide
+clean: clean-hls clean-ide
 
 clean-hls:
 	rm -rf .Xil
 	rm -f dfx_runtime.txt
 	rm -rf $(BUILD_DIR)
 
-clean-vitis-ide:
+clean-ide:
 	rm -rf _ide
 	rm -rf .cache
