@@ -125,8 +125,26 @@ Array optimizations:
 
 Loop optimizations:
 - Function base: PIPELINE OFF
-- LoopM:  PIPELINE STYLE=STP REWIND=TRUE
+- LoopM: PIPELINE STYLE=STP REWIND=TRUE
 - LoopP: UNROLL
 - LoopN: UNROLL
 
 ![alt text](image-6.png)
+
+## Optimization try 7 - Summation tree based
+LoopM iterations: 16
+LoopP iterations: 4
+LoopN iterations: 16
+
+Array optimizations:
+- A: ARRAY_PARTITION variable=A dim=2 type=complete
+- B: ARRAY_PARTITION variable=B dim=1 type=complete
+- C: ARRAY_PARTITION variable=C dim=2 type=complete
+
+Loop optimizations:
+- Function base: PIPELINE OFF
+- LoopM: PIPELINE STYLE=STP REWIND=TRUE
+- LoopP: PIPELINE STYLE=STP REWIND=TRUE
+- LoopN: UNROLL
+
+![alt text](image-7.png)

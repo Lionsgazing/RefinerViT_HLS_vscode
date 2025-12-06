@@ -21,12 +21,12 @@ void _MatMul(AType (&A)[M][N], BType (&B)[N][P], CType (&C)[M][P]) {
     //#pragma HLS DATAFLOW
     #pragma HLS PIPELINE OFF
     loopM: for (size_t m = 0; m < M; m++) {
-        #pragma HLS PIPELINE STYLE=STP REWIND=TRUE
+        #pragma HLS PIPELINE OFF
         //#pragma HLS UNROLL FACTOR=4
         loopP: for (size_t p = 0; p < P; p++) {
             //#pragma HLS PIPELINE II=1 STYLE=STP REWIND=FALSE
             //#pragma HLS PIPELINE ON II=1 STYLE=STP REWIND=TRUE
-            #pragma HLS PIPELINE STYLE=STP REWIND=TRUE
+            #pragma HLS PIPELINE OFF
             CType mulValue[N] = {};
             loopNMulParrallel: for (size_t n = 0; n < N; n++) {
                 #pragma HLS UNROLL
