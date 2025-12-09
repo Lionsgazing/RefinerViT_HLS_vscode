@@ -13,32 +13,43 @@ void _MatMul(AType (&A)[M][N], BType (&B)[N][P], CType (&C)[M][P]) {
     //#pragma HLS BIND_OP variable=B op=add impl=dsp
 
     // Array memory layout (optimized access)
-    #pragma HLS ARRAY_PARTITION variable=A dim=2 type=complete //block factor=4
-    #pragma HLS ARRAY_PARTITION variable=B dim=1 type=complete //block factor=4
-    #pragma HLS ARRAY_PARTITION variable=C dim=2 type=complete //block factor=4
+    // Required for effective UNROLLING of LoopN (use complete because of complete unroll)
+    #pragma HLS ARRAY_PARTITION variable=A dim=2 type=complete
+    #pragma HLS ARRAY_PARTITION variable=B dim=1 type=complete 
+
+    // Required for effective UNROLLING of LoopP (cyclic because of partial unrolling)
+    //#pragma HLS ARRAY_PARTITION variable=B dim=2 type=cyclic factor=4
+    //#pragma HLS ARRAY_PARTITION variable=C dim=2 type=cyclic factor=4
+
+    // Required for effective UNROLLING of LoopM
+    //#pragma HLS ARRAY_PARTITION variable=A dim=1 type=complete//type=cyclic factor=8
+    //#pragma HLS ARRAY_PARTITION variable=C dim=1 type=complete//type=cyclic factor=8
 
 
     //#pragma HLS DATAFLOW
     #pragma HLS PIPELINE OFF
     loopM: for (size_t m = 0; m < M; m++) {
+        //#pragma HLS UNROLL factor=8
+        //#pragma HLS PIPELINE ON
         #pragma HLS PIPELINE OFF
-        //#pragma HLS UNROLL FACTOR=4
+
+
         loopP: for (size_t p = 0; p < P; p++) {
-            //#pragma HLS PIPELINE II=1 STYLE=STP REWIND=FALSE
-            //#pragma HLS PIPELINE ON II=1 STYLE=STP REWIND=TRUE
+            //#pragma HLS UNROLL factor=4
             #pragma HLS PIPELINE OFF
+
+
+            //#pragma HLS UNROLL factor=2
+            //#pragma HLS PIPELINE ON
+
             CType mulValue[N] = {};
-            loopNMulParrallel: for (size_t n = 0; n < N; n++) {
+            #pragma HLS ARRAY_PARTITION variable=mulValue dim=1 type=complete
+            loopN: for (size_t n = 0; n < N; n++) {
                 #pragma HLS UNROLL
-                //#pragma HLS BIND_OP variable=sum op=add impl=dsp
-                //#pragma HLS BIND_OP variable=A op=mul impl=dsp
-                //#pragma HLS BIND_OP variable=B op=mul impl=dsp
                 mulValue[n] = A[m][n] * B[n][p]; // Ensuring fast access of A and B is important!
             }
             //Using much optimized summation method. Without this the MatMul would be VERY slow.
             SummationTree<CType, CType, N>(mulValue, &C[m][p]); 
-
-            //C[m][p] = sum;
         }
     }
 }

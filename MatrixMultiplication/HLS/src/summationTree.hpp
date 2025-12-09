@@ -58,7 +58,7 @@ void SummationTree(InputType input[N], OutputType* output) {
     using ArrayRemaindingReductionSteps = typename GeneratorRemainder2<N>::type; // Compiletime generates an array of the needed extra steps for each step into the summation tree.
 
     // Iterate through all reduction steps.
-    for (ap_uint<32> reductionStep = 0; reductionStep < TotalReductions; reductionStep++) {
+    for (size_t reductionStep = 0; reductionStep < TotalReductions; reductionStep++) {
         #pragma HLS UNROLL
         // Handles the edge cases when the input size does not give a clean Log2 value.
         if (ArrayRemaindingReductionSteps::data[reductionStep]) {
@@ -66,7 +66,7 @@ void SummationTree(InputType input[N], OutputType* output) {
         }
 
         // Creates the summation tree from the compiletime generated reduction steps.
-        for (ap_uint<32> storageIndex = 0; storageIndex < ArrayReductionSteps::data[reductionStep]; storageIndex++) {
+        for (size_t storageIndex = 0; storageIndex < ArrayReductionSteps::data[reductionStep]; storageIndex++) {
             #pragma HLS UNROLL
             input[storageIndex] = input[2*storageIndex] + input[2*storageIndex + 1];
         }

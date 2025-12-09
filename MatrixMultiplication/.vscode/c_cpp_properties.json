@@ -5,11 +5,11 @@
             "includePath": [
                 "${workspaceFolder}/HLS/src/**",
                 "${workspaceFolder}/Testbench/src/**",
-                "C:\\Xilinx\\2025.1\\Vitis\\include",
-                "C:\\Xilinx\\2025.1\\Vitis\\include\\etc",
-                "C:\\Xilinx\\2025.1\\Vitis\\include\\ap_sysc",
-                "C:\\Xilinx\\2025.1\\Vitis\\win64\\tools\\auto_cc\\include",
-                "C:\\Xilinx\\2025.1\\Vitis\\win64\\tools\\systemc\\include"
+                "D:\\Xilinx\\2025.1\\Vitis\\include",
+                "D:\\Xilinx\\2025.1\\Vitis\\include\\etc",
+                "D:\\Xilinx\\2025.1\\Vitis\\include\\ap_sysc",
+                "D:\\Xilinx\\2025.1\\Vitis\\win64\\tools\\auto_cc\\include",
+                "D:\\Xilinx\\2025.1\\Vitis\\win64\\tools\\systemc\\include"
             ],
             "defines": [
                 "_DEBUG",
