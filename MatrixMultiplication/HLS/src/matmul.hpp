@@ -4,7 +4,7 @@
 
 
 //A[m, n], B[n, p], C[m, p]
-/*template<typename AType, typename BType, typename CType, int M, int N, int P>
+template<typename AType, typename BType, typename CType, int M, int N, int P>
 void _MatMul(AType (&A)[M][N], BType (&B)[N][P], CType (&C)[M][P]) {
     // Operation bindings to hardware
     //#pragma HLS BIND_OP variable=A op=mul impl=dsp
@@ -25,8 +25,6 @@ void _MatMul(AType (&A)[M][N], BType (&B)[N][P], CType (&C)[M][P]) {
     //#pragma HLS ARRAY_PARTITION variable=A dim=1 type=complete
     //#pragma HLS ARRAY_PARTITION variable=C dim=1 type=complete
 
-
-    //#pragma HLS DATAFLOW
     #pragma HLS PIPELINE OFF
     loopM: for (size_t m = 0; m < M; m++) {
         #pragma HLS PIPELINE OFF
@@ -45,21 +43,4 @@ void _MatMul(AType (&A)[M][N], BType (&B)[N][P], CType (&C)[M][P]) {
             SummationTree<CType, CType, N>(mulValue, &C[m][p]); 
         }
     }
-}*/
-
-template<typename AType, typename BType, typename CType, int M, int N, int P>
-void _MatMul(AType (&A)[M][N], BType (&B)[N][P], CType (&C)[M][P]) {
-    #pragma HLS PIPELINE OFF
-    loopM: for (size_t m = 0; m < M; m++) {
-        #pragma HLS PIPELINE OFF
-        loopP: for (size_t p = 0; p < P; p++) {
-            #pragma HLS PIPELINE OFF
-            loopN: for (size_t n = 0; n < N; n++) {
-                #pragma HLS PIPELINE OFF
-                C[m][p] += A[m][n] * B[n][p];
-            }
-        }
-    }
 }
-
-
